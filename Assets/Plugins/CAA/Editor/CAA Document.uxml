@@ -1,0 +1,35 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Plugins/CAA/Editor/CAA%20Style%20Sheet.uss?fileID=7433441132597879392&amp;guid=d1684452eb7954d24bebda4db26561f6&amp;type=3#CAA Style Sheet" />
+    <ui:Label tabindex="-1" text="CAA Controller" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Title" class="TitleStyle" />
+    <ui:VisualElement name="Line" style="height: 2px; background-color: rgba(0, 0, 0, 0.25); border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; margin-right: 4px; margin-left: 4px;" />
+    <ui:VisualElement name="Space" style="height: 4px;" />
+    <ui:Label tabindex="-1" text="Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" style="-unity-font-style: bold; margin-bottom: 4px;" />
+    <ui:Toggle label="Auto Volume" value="true" name="Auto-Volume-Toggle" binding-path="AutoVolume" class="unity-base-field__aligned" />
+    <uie:ObjectField label="Volume" type="UnityEngine.Rendering.Volume, Unity.RenderPipelines.Core.Runtime" name="Volume-Field" binding-path="Target" class="unity-base-field__aligned" style="display: none;" />
+    <ui:VisualElement name="Space" style="height: 4px;" />
+    <ui:VisualElement name="Line" style="height: 2px; background-color: rgba(0, 0, 0, 0.25); border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; margin-right: 4px; margin-left: 4px;" />
+    <ui:VisualElement name="Space" style="height: 4px;" />
+    <ui:VisualElement name="Space" style="height: 4px;" />
+    <ui:VisualElement name="Intensity-Group">
+        <ui:Label tabindex="-1" text="Intensity" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" style="-unity-font-style: bold;" />
+        <ui:Slider picking-mode="Ignore" label="Intensity" value="0.5" high-value="1" binding-path="Intensity" name="IntensityField" show-input-field="true" class="unity-base-field__aligned" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Space" style="height: 4px;" />
+    <ui:VisualElement name="Red-Offset-Group">
+        <ui:Label tabindex="-1" text="Red Offset" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-font-style: bold;" />
+        <ui:Slider picking-mode="Ignore" label="Horizontal" value="0" high-value="1" low-value="-1" show-input-field="true" name="Red-Offset-X" class="unity-base-field__aligned" />
+        <ui:Slider picking-mode="Ignore" label="Vertical" value="0" high-value="1" low-value="-1" name="Red-Offset-Y" show-input-field="true" class="unity-base-field__aligned" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Space" style="height: 4px;" />
+    <ui:VisualElement name="Green-Offset-Group">
+        <ui:Label tabindex="-1" text="Green Offset" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-font-style: bold;" />
+        <ui:Slider picking-mode="Ignore" label="Horizontal" value="0" high-value="1" low-value="-1" show-input-field="true" name="Green-Offset-X" class="unity-base-field__aligned" />
+        <ui:Slider picking-mode="Ignore" label="Vertical" value="0" high-value="1" low-value="-1" name="Green-Offset-Y" show-input-field="true" class="unity-base-field__aligned" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Space" style="height: 4px;" />
+    <ui:VisualElement name="Blue-Offset-Group">
+        <ui:Label tabindex="-1" text="Blue Offset" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-font-style: bold;" />
+        <ui:Slider picking-mode="Ignore" label="Horizontal" value="0" high-value="1" low-value="-1" show-input-field="true" name="Blue-Offset-X" class="unity-base-field__aligned" />
+        <ui:Slider picking-mode="Ignore" label="Vertical" value="0" high-value="1" low-value="-1" name="Blue-Offset-Y" show-input-field="true" class="unity-base-field__aligned" />
+    </ui:VisualElement>
+</ui:UXML>
