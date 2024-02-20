@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2154194964158760689
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0222b97e9dbc24128beefddd73e9a15e, type: 3}
+  m_Name: Grayscale
+  m_EditorClassIdentifier: 
+  active: 1
+  <displayName>k__BackingField: 
+  intensity:
+    m_OverrideState: 1
+    m_Value: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13,8 +30,8 @@ MonoBehaviour:
   m_Name: Global Volume Profile
   m_EditorClassIdentifier: 
   components:
-  - {fileID: 8451174806503353838}
---- !u!114 &8451174806503353838
+  - {fileID: 2262148362706555144}
+--- !u!114 &2262148362706555144
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -29,7 +46,7 @@ MonoBehaviour:
   active: 1
   Intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.047
   RedOffset:
     m_OverrideState: 0
     m_Value: {x: 0.1, y: -0.1}

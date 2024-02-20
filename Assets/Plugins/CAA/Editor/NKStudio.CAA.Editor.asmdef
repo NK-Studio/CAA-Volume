@@ -1,0 +1,18 @@
+{
+    "name": "NKStudio.CAA.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:efaee570897d54d098cb96355cdd4a12"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

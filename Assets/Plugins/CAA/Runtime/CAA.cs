@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 
 namespace NKStudio
 {
-    [Serializable, VolumeComponentMenu("NK Studio/CAA")]
+    [Serializable, VolumeComponentMenu("Custom/CAA")]
     public class CAA : VolumeComponent, IPostProcessComponent
     {
         [SerializeField, Tooltip("화면이 중심점에서 멀어지는 정도를 설정합니다. 기본값은 0.0입니다.")]
@@ -23,14 +23,14 @@ namespace NKStudio
         public bool IsActive()         => Intensity.value > 0;
         public bool IsTileCompatible() => false;
 
-        public float   GetIntensity()        => Intensity.GetValue<float>();
-        public Vector2 GetRedOffset()        => RedOffset.GetValue<Vector2>();
-        public Vector2 GetGreenOffset()      => GreenOffset.GetValue<Vector2>();
-        public Vector2 GetBlueOffset()       => BlueOffset.GetValue<Vector2>();
+        public float   GetIntensity()   => Intensity.GetValue<float>();
+        public Vector2 GetRedOffset()   => RedOffset.GetValue<Vector2>();
+        public Vector2 GetGreenOffset() => GreenOffset.GetValue<Vector2>();
+        public Vector2 GetBlueOffset()  => BlueOffset.GetValue<Vector2>();
 
-        public void SetIntensity(float intensity)               => Intensity.Override(intensity);
-        public void SetRedOffset(Vector2 redOffset)             => RedOffset.Override(redOffset);
-        public void SetGreenOffset(Vector2 greenOffset)         => GreenOffset.Override(greenOffset);
-        public void SetBlueOffset(Vector2 blueOffset)           => BlueOffset.Override(blueOffset);
+        public void SetIntensity(float intensity)       => Intensity.Override(intensity);
+        public void SetRedOffset(Vector2 redOffset)     => RedOffset.Override(redOffset);
+        public void SetGreenOffset(Vector2 greenOffset) => GreenOffset.Override(greenOffset);
+        public void SetBlueOffset(Vector2 blueOffset)   => BlueOffset.Override(blueOffset);
     }
 }

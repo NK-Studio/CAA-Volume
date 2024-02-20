@@ -1,50 +1,45 @@
 using UnityEngine.Rendering.Universal;
-using NKStudio;
 using UnityEngine;
-using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal.Utility;
 
-public class CAARenderFeature : ScriptableRendererFeature
+namespace NKStudio
 {
-    private Material _material;
-    private CAARenderPass _caaPass;
-
-    /// <inheritdoc/>
-    public override void Create()
+    public class CAARenderFeature : ScriptableRendererFeature
     {
-        if (!_material)
-            _material = CoreUtils.CreateEngineMaterial("Hidden/Universal Render Pipeline/CAA");
+        private Shader _shader;
+        private CAARenderPass _caaPass;
+        private UniversalRendererData _universalRendererData;
 
-        if (_caaPass == null)
-            _caaPass = new CAARenderPass(_material);
-    }
+        public override void Create()
+        {
+            name = "Chromatic Aberration Advanced";
+            _caaPass = new CAARenderPass();
+            _caaPass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
 
-    // Here you can inject one or multiple render passes in the renderer.
-    // This method is called when setting up the renderer once per-camera.
-    public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
-    {
-        if (!renderingData.postProcessingEnabled)
-            return;
+            _shader = Shader.Find("Hidden/Universal Render Pipeline/CAA");
+        }
 
-        if (renderingData.cameraData.cameraType != CameraType.Game)
-            return;
+        public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
+        {
+            if (!_universalRendererData)
+                _universalRendererData = URPRendererUtility.GetUniversalRendererData();
 
-        _caaPass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
-        _caaPass.ConfigureInput(ScriptableRenderPassInput.Color);
+            if (!URPRendererUtility.IsPostProcessEnabled(_universalRendererData, ref renderingData))
+                return;
 
-        renderer.EnqueuePass(_caaPass);
-    }
-    
-    public override void SetupRenderPasses(ScriptableRenderer renderer, in RenderingData renderingData)
-    {
-        _caaPass.SetTarget(renderer.cameraColorTargetHandle);
-    }
+            if (renderingData.cameraData.cameraType != CameraType.Game)
+                return;
 
-    protected override void Dispose(bool disposing)
-    {
-        _caaPass?.Dispose();
-        _caaPass = null;
+            if (_caaPass.Setup(_shader))
+                renderer.EnqueuePass(_caaPass);
+        }
 
-        CoreUtils.Destroy(_material);
-        _material = null;
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _caaPass?.Cleanup();
+            }
+        }
     }
 }

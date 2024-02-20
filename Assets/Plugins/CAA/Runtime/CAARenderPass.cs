@@ -6,14 +6,12 @@ namespace NKStudio
 {
     public class CAARenderPass : ScriptableRenderPass
     {
-        private readonly Material _material;
-        private RTHandle _colorTargetHandle;
-        private RTHandle _tempHandle;
+        private Material _material;
+        private CAA _caa;
         
-        private const string BufferName = "CAA Pass";
-        private readonly ProfilingSampler _profilingSampler = new("Chromatic Aberration Advanced");
+        private readonly ProfilingSampler kProfilingSampler = new("Chromatic Aberration Advanced");
         
-        private static class CAAShaderParams
+        private static class ShaderParams
         {
             public static readonly int Intensity = Shader.PropertyToID("_Intensity");
             public static readonly int RedOffset = Shader.PropertyToID("_RedOffset");
@@ -21,68 +19,54 @@ namespace NKStudio
             public static readonly int BlueOffset = Shader.PropertyToID("_BlueOffset");
         }
         
-        private void RefreshShaderParams(CAA caa)
+        public bool Setup(Shader shader)
         {
-            _material.SetFloat(CAAShaderParams.Intensity, caa.GetIntensity());
-            _material.SetVector(CAAShaderParams.RedOffset, caa.GetRedOffset());
-            _material.SetVector(CAAShaderParams.GreenOffset, caa.GetGreenOffset());
-            _material.SetVector(CAAShaderParams.BlueOffset, caa.GetBlueOffset());
+            if (_material == null)
+            {
+                if (shader == null) {
+                    Debug.LogWarning("Could not load shader. Please make sure shader is present.");
+                    return false;
+                }
+                
+                _material = CoreUtils.CreateEngineMaterial(shader);
+            }
+            return true;
         }
-        
-        public CAARenderPass(Material material)
-        {
-            _material = material;
-        }
-        
-        public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
-        {
-            RenderTextureDescriptor desc = renderingData.cameraData.cameraTargetDescriptor;
-            desc.depthBufferBits = (int)DepthBits.None;
-            
-            // 임시 렌더 텍스쳐를 생성합니다.
-            RenderingUtils.ReAllocateIfNeeded(ref _tempHandle, desc, name: "_TemporaryColorTexture");
-            
-            // 렌더링 대상으로 설정
-            ConfigureTarget(_colorTargetHandle);
-        }
-        
+
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
             if (_material == null)
                 return;
+
+            VolumeStack stack = VolumeManager.instance.stack;
+            _caa = stack.GetComponent<CAA>();
             
-            CAA caa = VolumeManager.instance.stack.GetComponent<CAA>();
-
-            if (!caa.IsActive())
-                return;
-
-            CommandBuffer cmd = CommandBufferPool.Get(BufferName);
-            using (new ProfilingScope(cmd, _profilingSampler))
-            {
-                RefreshShaderParams(caa);
-                Blitter.BlitCameraTexture(cmd, _colorTargetHandle, _tempHandle, _material, 0);
-                Blitter.BlitCameraTexture(cmd, _tempHandle, _colorTargetHandle);
-            }
-
+            CommandBuffer cmd = CommandBufferPool.Get();
+            
+            if (_caa.IsActive())
+                DoChromaticAberration(cmd, ref renderingData);
+            
             context.ExecuteCommandBuffer(cmd);
             cmd.Clear();
 
             CommandBufferPool.Release(cmd);
         }
 
-        // 이 렌더 패스 실행 중에 생성된 할당된 리소스를 정리합니다.
-        // public override void OnCameraCleanup(CommandBuffer cmd)
-        // {
-        // }
-        
-        public void SetTarget(RTHandle colorHandle)
+        private void DoChromaticAberration(CommandBuffer cmd, ref RenderingData renderingData)
         {
-            _colorTargetHandle = colorHandle;
-        }
-        public void Dispose()
+            _material.SetFloat(ShaderParams.Intensity, _caa.GetIntensity());
+            _material.SetVector(ShaderParams.RedOffset, _caa.GetRedOffset());
+            _material.SetVector(ShaderParams.GreenOffset, _caa.GetGreenOffset());
+            _material.SetVector(ShaderParams.BlueOffset, _caa.GetBlueOffset());
+            
+            using (new ProfilingScope(cmd, kProfilingSampler))
+                Blit(cmd, ref renderingData, _material);
+        } 
+            
+        public void Cleanup()
         {
-            _colorTargetHandle?.Release();
-            _tempHandle?.Release();
+             // 렌더링 종료시 호출
+             CoreUtils.Destroy(_material);
         }
     }
 }
